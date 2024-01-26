@@ -1,25 +1,26 @@
 import glob
+import os
 
 import numpy as np
 from PIL import Image
 from skimage.io import imread
 from tqdm import tqdm
 
-folder_path = ""  # Add the path to your data directory
+folder_path = "C:/jason/new magang/DUCK-Net/kvasir"  # Add the path to your data directory
 
 
 def load_data(img_height, img_width, images_to_be_loaded, dataset):
-    IMAGES_PATH = folder_path + 'images/'
-    MASKS_PATH = folder_path + 'masks/'
+    IMAGES_PATH = os.path.join(folder_path, 'images')
+    MASKS_PATH = os.path.join(folder_path, 'masks')
 
     if dataset == 'kvasir':
-        train_ids = glob.glob(IMAGES_PATH + "*.jpg")
+        train_ids = glob.glob(os.path.join(IMAGES_PATH, "*.jpg"))
 
     if dataset == 'cvc-clinicdb':
-        train_ids = glob.glob(IMAGES_PATH + "*.tif")
+        train_ids = glob.glob(os.path.join(IMAGES_PATH , "*.tif"))
 
     if dataset == 'cvc-colondb' or dataset == 'etis-laribpolypdb':
-        train_ids = glob.glob(IMAGES_PATH + "*.png")
+        train_ids = glob.glob(os.path.join(IMAGES_PATH, "*.png"))
 
     if images_to_be_loaded == -1:
         images_to_be_loaded = len(train_ids)
@@ -50,6 +51,7 @@ def load_data(img_height, img_width, images_to_be_loaded, dataset):
         pillow_mask = Image.fromarray(mask_)
         pillow_mask = pillow_mask.resize((img_height, img_width), resample=Image.LANCZOS)
         mask_ = np.array(pillow_mask)
+        mask_ = np.mean(mask_, axis=2)
 
         for i in range(img_height):
             for j in range(img_width):
