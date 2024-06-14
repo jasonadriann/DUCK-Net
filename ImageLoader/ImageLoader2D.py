@@ -24,7 +24,7 @@ def load_data(img_height, img_width, images_to_be_loaded, dataset):
 
     if images_to_be_loaded == -1:
         images_to_be_loaded = len(train_ids)
-
+#
     X_train = np.zeros((images_to_be_loaded, img_height, img_width, 3), dtype=np.float32)
     Y_train = np.zeros((images_to_be_loaded, img_height, img_width), dtype=np.uint8)
 
@@ -44,8 +44,9 @@ def load_data(img_height, img_width, images_to_be_loaded, dataset):
         pillow_image = Image.fromarray(image)
 
         pillow_image = pillow_image.resize((img_height, img_width))
+#
         image = np.array(pillow_image)
-
+#
         X_train[n] = image / 255
 
         pillow_mask = Image.fromarray(mask_)
